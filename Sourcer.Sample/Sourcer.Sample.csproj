@@ -9,6 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sourcer\Sourcer.csproj" />
+    <ProjectReference Include="..\Sourcer.SourceGenerators\Sourcer.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Sourcer.Attributes;
+﻿namespace Sourcer;
 
 public enum ServiceLifetime
 {
