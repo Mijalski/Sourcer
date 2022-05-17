@@ -24,7 +24,7 @@ public class DependencyInjectionSourceGenerator : ISourceGenerator
             Debugger.Launch();
         }
 #endif 
-        if (!(context.SyntaxContextReceiver is RegisteredTypesCollector receiver))
+        if (context.SyntaxContextReceiver is not RegisteredTypesCollector receiver)
         {
             return;
         }
