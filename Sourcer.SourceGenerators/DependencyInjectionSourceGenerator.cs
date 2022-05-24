@@ -18,12 +18,12 @@ public class DependencyInjectionSourceGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
-#if DEBUG
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-#endif 
+//#if DEBUG
+//        if (!Debugger.IsAttached)
+//        {
+//            Debugger.Launch();
+//        }
+//#endif 
         if (context.SyntaxContextReceiver is not RegisteredTypesCollector receiver)
         {
             return;

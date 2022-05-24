@@ -1,7 +1,9 @@
 ﻿namespace Sourcer;
 
-public class SourcerContainer
+public abstract class SourcerContainer
 {
+    public abstract void Create();
+
     public SourcerScope CreateScope()
     {
         throw new NotImplementedException();
