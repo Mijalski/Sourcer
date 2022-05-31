@@ -7,9 +7,10 @@ public class RegisteredTypesCollector : ISyntaxContextReceiver
 {
     public IList<Registration> RegisteredTypes = new List<Registration>();
 
-    private const string CreateMethodName = "Create";
-    private const string SourcerContainerBaseName = "SourcerContainer";
-    private const string SourcerNamespace = "Sourcer";
+    public const string CreateMethodName = "Create";
+    public const string SourcerContainerBaseName = "SourcerContainer";
+    public const string SourcerContainerBuilderName = "SourcerContainerBuilder";
+    public const string SourcerNamespace = "Sourcer";
 
     public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
     {
