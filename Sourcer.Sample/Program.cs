@@ -1,14 +1,8 @@
-﻿using Sourcer;
-using Sourcer.Sample;
+﻿using Sourcer.Sample;
 
-//services.AddTransient<DateTimeProvider>();
+var container = new SampleContainer();
+var dateTimeProvider = container.GetDateTimeProvider();
+Console.WriteLine(dateTimeProvider.GetUtcNow());
 
-//var container = services.Build();
-
-//container.CreateScope();
-
-//Console.WriteLine($"Current time: {container.GetService<DateTimeProvider>().GetUtcNow()}");
-//Console.WriteLine($"Current time: {container.GetService<DateTimeProvider>().GetUtcNow()}");
-
-
-Console.WriteLine("hello world");
+var helloWorldService = container.GetHelloWorldService();
+Console.WriteLine(helloWorldService.SayHello());

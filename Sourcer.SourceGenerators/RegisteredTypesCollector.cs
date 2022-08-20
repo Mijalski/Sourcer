@@ -5,21 +5,15 @@ namespace Sourcer.SourceGenerators;
 
 public class RegisteredTypesCollector : ISyntaxContextReceiver
 {
-    public IList<Registration> RegisteredTypes = new List<Registration>();
-
-    public const string CreateMethodName = "Create";
-    public const string SourcerContainerBaseName = "SourcerContainer";
-    public const string SourcerContainerBuilderName = "SourcerContainerBuilder";
-    public const string SourcerNamespace = "Sourcer";
+    public IList<Registration> Registrations = new List<Registration>();
 
     public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
     {
         if (context.Node is ClassDeclarationSyntax { BaseList: { } } classDeclaration
-            && classDeclaration.BaseList.Types.Any(x => x.Type.ToString() == SourcerContainerBaseName)
-            && classDeclaration.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword)))
+            && classDeclaration.BaseList.Types.Any(x => x.Type.ToString() == Consts.SourcerContainerBaseName))
         {
             var methodDeclaration = classDeclaration.Members.OfType<MethodDeclarationSyntax>()
-                .FirstOrDefault(x => x.Identifier.ValueText == CreateMethodName
+                .FirstOrDefault(x => x.Identifier.ValueText == Consts.CreateMethodName
                                      && x.Modifiers.Any(m => m.IsKind(SyntaxKind.OverrideKeyword)));
 
             if (methodDeclaration is null)
@@ -34,7 +28,7 @@ public class RegisteredTypesCollector : ISyntaxContextReceiver
                 return;
             }
 
-            RegisteredTypes.Add(new Registration(methodDeclaration, semanticModel));
+            Registrations.Add(new Registration(methodDeclaration, semanticModel));
         }
     }
 }
