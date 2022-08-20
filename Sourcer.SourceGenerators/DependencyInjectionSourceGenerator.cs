@@ -65,7 +65,8 @@ public class DependencyInjectionSourceGenerator : ISourceGenerator
             usings.AddRange((namespaceSyntaxNode?.Parent as CompilationUnitSyntax)?
                 .Usings
                 .Select(x => x.Name as QualifiedNameSyntax)
-                .Select(x => x.ToString()));
+                .Select(x => x?.ToString())
+                .Where(x => x is not null));
 
             switch (namespaceSyntaxNode) // Add base namespace to usings
             {
@@ -81,8 +82,8 @@ public class DependencyInjectionSourceGenerator : ISourceGenerator
             foreach (var statement in methodDeclarationBody.Statements)
             {
                 var body = statement.ToString();
-                Regex.Replace(body, @"\s+", "");
-
+                body = body.Replace(" ", string.Empty);
+;
                 if (!body.Contains("Build()"))
                 {
                     continue;
@@ -139,12 +140,11 @@ namespace Sourcer
         }}
 ");
 
-        foreach (var (implementationName, abstractionName, serviceLifetime, registration) in typesToRegister)
+        foreach (var (abstractionName, implementationName, serviceLifetime, registration) in typesToRegister)
         {
             sourceBuilder.Append($@"
         public {implementationName} Get{abstractionName}()
-        {{
-            ");
+        {{");
             if (serviceLifetime is ServiceLifetime.Transient or ServiceLifetime.Scoped)
             {
                 sourceBuilder.Append($@"
