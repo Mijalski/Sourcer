@@ -129,6 +129,9 @@ public class DependencyInjectionSourceGenerator : ISourceGenerator
         }
 
         sourceBuilder.Append($@"
+using System;
+using System.Collections.Generic;
+
 namespace Sourcer
 {{
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Sourcer"", ""{FileVersionInfo.GetVersionInfo(GetType().Assembly.Location).ProductVersion}"")]
@@ -142,18 +145,35 @@ namespace Sourcer
 
         foreach (var (abstractionName, implementationName, serviceLifetime, registration) in typesToRegister)
         {
-            sourceBuilder.Append($@"
-        public {implementationName} Get{abstractionName}()
-        {{");
-            if (serviceLifetime is ServiceLifetime.Transient or ServiceLifetime.Scoped)
+            if (serviceLifetime is ServiceLifetime.Transient)
             {
                 sourceBuilder.Append($@"
+        public {implementationName} Get{abstractionName}()
+        {{
             return new {implementationName}();
         }}");
+            }
+            else if (serviceLifetime is ServiceLifetime.Scoped)
+            {
+                sourceBuilder.Append($@"
+        public {implementationName} Get{abstractionName}(Guid id)
+        {{
+                if (_{implementationName}s.TryGetValue(id, out var existingService)) {{
+                    return existingService;
+                }}
+                var newService = new {implementationName}();
+                _{implementationName}s.Add(id, newService);
+                return newService;
+        }}
+
+        private readonly Dictionary<Guid, {implementationName}> _{implementationName}s = new();");
+
             }
             else
             {
                 sourceBuilder.Append($@"
+        public {implementationName} Get{abstractionName}()
+        {{
             return _{implementationName};
         }}
 

@@ -6,3 +6,4 @@ Console.WriteLine(dateTimeProvider.GetUtcNow());
 
 var helloWorldService = container.GetHelloWorldService();
 Console.WriteLine(helloWorldService.SayHello());
+
